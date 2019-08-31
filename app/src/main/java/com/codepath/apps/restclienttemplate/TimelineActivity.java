@@ -1,37 +1,37 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Headers;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    TwitterClient client;
-    TweetAdapter tweetAdapter;
-    ArrayList<Tweet> tweets;
-    RecyclerView rvTweets;
-    private Object TwitterApp;
-    // RecyclerView rvTweets;
 
-    @Override
+    private TwitterClient client;
+            TweetAdapter tweetAdapter;
+            ArrayList<Tweet> tweets;
+            RecyclerView rvTweets;
+    private Object Throwable;
+    private String string;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        client = TwitterApp.getRestClient();
+        client = (TwitterClient) TwitterApp.getRestClient();
 
         //find the RecyclerView
         rvTweets = (RecyclerView) findViewById(R.id.rvtweet);
@@ -46,66 +46,99 @@ public class TimelineActivity extends AppCompatActivity {
         populateTimeline();
     }
 
-    private void populateTimeline() {
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
-            private Headers[] headers;
+//    private void populateTimeline() {
+//        client.getHomeTimeline(new JsonHttpResponseHandler() {
+//            public void setStatusCode(int statusCode) {
+//                this.statusCode = statusCode;
+//            }
+//
+//            public int getStatusCode() {
+//                return statusCode;
+//            }
+//
+//            public void setHeaders(Headers[] headers) {
+//                this.headers = headers;
+//            }
+//
+//            public Headers[] getHeaders() {
+//                return headers;
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Headers headers, JSON json) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+//
+//            }
+//
+//            private int statusCode;
+//            private Headers[] headers;
+//
+//
+//            public void onSuccess(int statusCode, Headers[] headers, JSONObject response) {
+//                this.statusCode = statusCode;
+//                this.headers = headers;
+//                Log.d("TwitterClient", response.toString());
+//            }
+//
+//            public void onSuccess(int statusCode, Headers[]headers, JSONArray response) {
+//                this.statusCode = statusCode;
+//                this.headers = headers;
+//                //         Log.d("TwitterClient", response.toString());
+//                // iterate through the JSON array
+//                // for each entry, deserialize the JSON object
+//
+//                for (int i = 0; i < response.length(); i++) {
+//                    // convert each object to a Tweet model
+//                    // add that Tweet model to our data source
+//                    // notify the adapter that we've added an item
+//                    try {
+//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+//                        tweets.add(tweet);
+//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
+//            }
+//
+//
+//            public void onSuccess(int statusCode,Headers[], String responseString, Throwable throwable) {
+//                Log.d("TwitterClient", responseString);
+//                throwable.addSuppressed((java.lang.Throwable) Throwable);
+//            }
+//
+//
+//            public void onFailure(int statusCode, Headers[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            public void onFailure(int statusCode, Headers[] headers, Throwable throwable , String response) {
+//                super.onFailure(statusCode, headers, string response);
+//
+//            }
+//        });
+//    }
 
+    private void populateTimeline(){
+        client.getHomeTimeline(new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Log.d("Succes", response.toString());
             }
 
             @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Headers[] headers, JSONObject response) {
-                this.headers = headers;
-                Log.d("TwitterClient", response.toString());
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Headers[]headers, JSONArray response) {
-   //                 Log.d("TwitterClient", response.toString());
-                // iterate through the JSON array
-                // for each entry, deserialize the JSON object
-
-                for (int i = 0; i < response.length(); i++) {
-                    // convert each object to a Tweet model
-                    // add that Tweet model to our data source
-                    // notify the adapter that we've added an item
-                    try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode.Headers[]headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStack();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Headers[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            public void onFailure(int statusCode, Headers[] headers, Throwable throwable, throwable String response) {
-                super.onFailure(statusCode, headers, response);
-
-
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                super.onFailure(call, e);
             }
         });
     }
+
 }
 

@@ -1,11 +1,10 @@
 package com.codepath.apps.restclienttemplate.models;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *  Created by rhu on 8/23/19
+ *  Created by rhu on 5/23/17
  */
 public class Tweet {
 
@@ -13,8 +12,8 @@ public class Tweet {
     public  String body;
     public long uid; // database ID for the tweet
     public Object user;
-    private User user;
     public String createdAt;
+    public int username;
 
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
@@ -24,12 +23,8 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
-        tweet.setUser(User.fromJSON(jsonObject.getJSONObject("user")));
+        tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         return tweet;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {

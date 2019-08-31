@@ -6,19 +6,21 @@ import org.json.JSONObject;
 
 public class User {
     // list the attributes
-    public string name;
+    public String name;
     public long uid;
-    private string screenName;
-    public string profileImageUrl;
+    public String screenName;
+    public String profileImageUrl;
 
     // deserialized tje JSON
     public  static  User fromJSON(JSONObject json)throws JSONException {
-  User user = new User();
-// extract and fill the values
-user.name = json.getString("name");
-user.uid = json.getLong("id");
- user.screenName = json.getString("screen_name");
+      User user = new User();
 
-   return user;
-}
+     // extract and fill the values
+      user.name = json.getString("name");
+      user.uid = json.getLong("id");
+      user.screenName = json.getString("screen_name");
+      user.profileImageUrl = json.getString("profile_image_url");
+
+       return user;
+    }
  }

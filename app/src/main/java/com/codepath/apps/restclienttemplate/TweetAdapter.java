@@ -26,19 +26,24 @@ public class TweetAdapter extends  RecyclerView.Adapter<TweetAdapter.ViewHolder>
 
  private List<Tweet> mTweets;
   Context context;
+    private Object Context;
+
+    public android.content.Context getContext() {
+        return context;
+    }
 
     // pass in the Tweets array in the constructor
     public  TweetAdapter(List<Tweet> tweets) { mTweets = tweets; }
 
 
-    // inflate the layout and cache the findViewByids into a ViewHolder
+    // for each row, inflate the layout and cache the reference into  ViewHolder
+
     @Override
     public TweetAdapter.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
-         context = parent.getContext();
+         Context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(tweetView);
         return viewHolder;
     }
@@ -52,7 +57,7 @@ public class TweetAdapter extends  RecyclerView.Adapter<TweetAdapter.ViewHolder>
          // get the data according to position
         Tweet tweet = mTweets.get(position);
 
-        //set view data according to the model
+        // set view data according to the model
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
 
@@ -60,7 +65,9 @@ public class TweetAdapter extends  RecyclerView.Adapter<TweetAdapter.ViewHolder>
 
     }
     @Override
-     public int getItemCount() { return mTweets.size(); }
+     public int getItemCount() {
+        return mTweets.size();
+    }
 
     // create ViewHolder class
 
@@ -77,7 +84,7 @@ public class TweetAdapter extends  RecyclerView.Adapter<TweetAdapter.ViewHolder>
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvBody = (TextView) itemView.findViewById(R.id.tvBody)
+            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
         }
     }
 }
